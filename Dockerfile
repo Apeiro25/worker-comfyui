@@ -141,6 +141,7 @@ COPY --from=downloader /comfyui/models /comfyui/models
 RUN mkdir -p /workspace/runpod-slim && ln -s /comfyui /workspace/runpod-slim/ComfyUI
 
 # Configure git and clone custom nodes in a single RUN to ensure non-interactive mode
+# Note: ComfyUI-Manager is already installed in the base image, so we skip it here
 RUN git config --global credential.helper "" && \
     git config --global http.postBuffer 524288000 && \
     mkdir -p /workspace/runpod-slim/ComfyUI/custom_nodes && \
@@ -151,7 +152,6 @@ RUN git config --global credential.helper "" && \
     git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Impact-Pack.git && \
     git clone --depth=1 https://github.com/ltdrdata/comfyui-impact-subpack.git && \
     git clone --depth=1 https://github.com/kijai/ComfyUI-KJNodes.git && \
-    git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Manager.git && \
     git clone --depth=1 https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git && \
     git clone --depth=1 https://github.com/gseth/ControlAltAI-Nodes.git
 
