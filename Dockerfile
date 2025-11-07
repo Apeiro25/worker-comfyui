@@ -140,13 +140,10 @@ COPY --from=downloader /comfyui/models /comfyui/models
 # Symlink so your pod-style paths resolve 1:1
 RUN mkdir -p /workspace/runpod-slim && ln -s /comfyui /workspace/runpod-slim/ComfyUI
 
-# Ensure git is available and configure it for non-interactive use
-RUN git --version && \
-    git config --global credential.helper "" && \
-    git config --global http.postBuffer 524288000
-
-# Clone custom nodes exactly like your pod
-RUN mkdir -p /workspace/runpod-slim/ComfyUI/custom_nodes && \
+# Configure git and clone custom nodes in a single RUN to ensure non-interactive mode
+RUN git config --global credential.helper "" && \
+    git config --global http.postBuffer 524288000 && \
+    mkdir -p /workspace/runpod-slim/ComfyUI/custom_nodes && \
     cd /workspace/runpod-slim/ComfyUI/custom_nodes && \
     git clone --depth=1 https://github.com/chrisgoringe/cg-use-everywhere.git && \
     git clone --depth=1 https://github.com/civitai/civitai_comfy_nodes.git && \
