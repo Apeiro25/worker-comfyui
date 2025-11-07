@@ -140,18 +140,23 @@ COPY --from=downloader /comfyui/models /comfyui/models
 # Symlink so your pod-style paths resolve 1:1
 RUN mkdir -p /workspace/runpod-slim && ln -s /comfyui /workspace/runpod-slim/ComfyUI
 
+# Ensure git is available and configure it for non-interactive use
+RUN git --version && \
+    git config --global credential.helper "" && \
+    git config --global http.postBuffer 524288000
+
 # Clone custom nodes exactly like your pod
 RUN mkdir -p /workspace/runpod-slim/ComfyUI/custom_nodes && \
     cd /workspace/runpod-slim/ComfyUI/custom_nodes && \
-    git clone --depth=1 https://github.com/cg-use-everywhere/cg-use-everywhere.git && \
-    git clone --depth=1 https://github.com/civitai/civitai-comfyui.git && \
+    git clone --depth=1 https://github.com/chrisgoringe/cg-use-everywhere.git && \
+    git clone --depth=1 https://github.com/civitai/civitai_comfy_nodes.git && \
     git clone --depth=1 https://github.com/city96/ComfyUI-GGUF.git && \
     git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Impact-Pack.git && \
     git clone --depth=1 https://github.com/ltdrdata/comfyui-impact-subpack.git && \
-    git clone --depth=1 https://github.com/Kahllus/ComfyUI-KJNodes.git && \
+    git clone --depth=1 https://github.com/kijai/ComfyUI-KJNodes.git && \
     git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Manager.git && \
     git clone --depth=1 https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git && \
-    git clone --depth=1 https://github.com/ControlAltAI/ComfyUI-Advanced-Nodes.git
+    git clone --depth=1 https://github.com/gseth/ControlAltAI-Nodes.git
 
 # Bake your exact model set into the same paths your workflow expects
 RUN mkdir -p \
