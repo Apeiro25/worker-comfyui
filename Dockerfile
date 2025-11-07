@@ -173,6 +173,7 @@ RUN mkdir -p \
   wget -q -O /workspace/runpod-slim/ComfyUI/models/upscale_models/4x-ClearRealityV1.pth \
   https://huggingface.co/skbhadra/ClearRealityV1/resolve/bc01e27b38eec683dc6e3161dd56069c78e015ac/4x-ClearRealityV1.pth
 
+RUN mkdir -p /workspace/runpod-slim/ComfyUI/user/default/workflows
 COPY lew.json /workspace/runpod-slim/ComfyUI/user/default/workflows/lew.json
 
 # Reuse the same entrypoint from base
