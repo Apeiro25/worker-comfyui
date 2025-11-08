@@ -162,23 +162,30 @@ RUN mkdir -p \
   /workspace/runpod-slim/ComfyUI/models/text_encoders \
   /workspace/runpod-slim/ComfyUI/models/unet \
   /workspace/runpod-slim/ComfyUI/models/upscale_models && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/vae/ae.safetensors \
-  https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors \
-  https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/text_encoders/clip_l.safetensors \
-  https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/text_encoders/t5xxl_fp16.safetensors \
-  https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/unet/ultrarealFineTune_v4.gguf \
-  "https://civitai.com/api/download/models/1413133?format=GGUF" && \
-  wget -q -O /workspace/runpod-slim/ComfyUI/models/upscale_models/4x-ClearRealityV1.pth \
-  https://huggingface.co/skbhadra/ClearRealityV1/resolve/bc01e27b38eec683dc6e3161dd56069c78e015ac/4x-ClearRealityV1.pth
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/vae -o ae.safetensors \
+    https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors && \
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/diffusion_models -o flux1-dev-kontext_fp8_scaled.safetensors \
+    https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors && \
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/text_encoders -o clip_l.safetensors \
+    https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors && \
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/text_encoders -o t5xxl_fp16.safetensors \
+    https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors && \
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/unet -o ultrarealFineTune_v4.gguf \
+    "https://civitai.com/api/download/models/1413133?format=GGUF" && \
+  aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+    -d /workspace/runpod-slim/ComfyUI/models/upscale_models -o 4x-ClearRealityV1.pth \
+    https://huggingface.co/skbhadra/ClearRealityV1/resolve/bc01e27b38eec683dc6e3161dd56069c78e015ac/4x-ClearRealityV1.pth
 
 # Face detector model for Impact Pack detailer
 RUN mkdir -p /workspace/runpod-slim/ComfyUI/models/bbox && \
-    wget -q -O /workspace/runpod-slim/ComfyUI/models/bbox/face_yolov8m.pt \
-    https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/detection/bbox/face_yolov8m.pt
+    aria2c --console-log-level=error -c -x 16 -s 16 -k 1M \
+      -d /workspace/runpod-slim/ComfyUI/models/bbox -o face_yolov8m.pt \
+      https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/detection/bbox/face_yolov8m.pt
 
 RUN mkdir -p /workspace/runpod-slim/ComfyUI/user/default/workflows
 COPY lew.json /workspace/runpod-slim/ComfyUI/user/default/workflows/lew.json
