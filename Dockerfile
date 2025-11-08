@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     libxext6 \
     libxrender1 \
-    ffmpeg \
     && ln -sf /usr/bin/python3.12 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
@@ -135,9 +134,6 @@ RUN if [ "$MODEL_TYPE" = "flux1-dev-fp8" ]; then \
 # =========================
 FROM base AS final
 
-# Bring in anything the downloader grabbed (safe no-op if not used)
-COPY --from=downloader /comfyui/models /comfyui/models
-
 # Symlink so your pod-style paths resolve 1:1
 RUN mkdir -p /workspace/runpod-slim && ln -s /comfyui /workspace/runpod-slim/ComfyUI
 
@@ -148,11 +144,9 @@ RUN git config --global credential.helper "" && \
     mkdir -p /workspace/runpod-slim/ComfyUI/custom_nodes && \
     cd /workspace/runpod-slim/ComfyUI/custom_nodes && \
     git clone --depth=1 https://github.com/chrisgoringe/cg-use-everywhere.git && \
-    git clone --depth=1 https://github.com/civitai/civitai_comfy_nodes.git && \
     git clone --depth=1 https://github.com/city96/ComfyUI-GGUF.git && \
     git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Impact-Pack.git && \
     git clone --depth=1 https://github.com/ltdrdata/comfyui-impact-subpack.git && \
-    git clone --depth=1 https://github.com/kijai/ComfyUI-KJNodes.git && \
     git clone --depth=1 https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git && \
     git clone --depth=1 https://github.com/gseth/ControlAltAI-Nodes.git
 
